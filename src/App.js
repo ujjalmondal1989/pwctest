@@ -1,26 +1,37 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
-import {useMainContext} from './Context/MainContext';
+import { v4 as uuidv4 } from 'uuid';
+import {AddTodo} from './AddTodo';
+import {ListComponent} from './ListComponent';
+
 
 function App() {
-  const { text } = useMainContext();
+  const [mainState, setMainState] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [deleteLoader, setDeleteLoader] = useState(false);
+  const addTodoHanlder = (todo) => {
+    setLoader(true);
+    setTimeout(() => {
+      const tempState = [ ...mainState ];
+      tempState.push({ todo, id: uuidv4() });
+      setMainState(tempState);
+      setLoader(false);
+    }, 2000);
+  }
+
+  const deleteHandler = (id) => {
+    setDeleteLoader(true);
+    setTimeout(() => {
+      const restMainState = mainState.filter((item) => item.id !== id);
+      setMainState(restMainState);
+      setDeleteLoader(false);
+    }, 2000);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-          {text}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={{ display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+      <AddTodo addTodo={addTodoHanlder} /> {loader && 'Adding ...'}
+      {deleteLoader && 'Deleting ...'}
+      <ListComponent listData={mainState} deleteHandler={deleteHandler}/>
     </div>
   );
 }
