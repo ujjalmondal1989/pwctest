@@ -2,7 +2,6 @@ import React from "react";
 import { Button, List } from 'antd';
 
 export const EachRow = ({ data, deleteHandler }) => {
-    console.log(data);
     return (
         <>
             <List.Item style={{

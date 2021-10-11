@@ -4,7 +4,6 @@ import { List } from 'antd';
 
 
 export const ListComponent = ({ listData, deleteHandler }) => {
-    console.log(listData);
     return (
         <>
             <List
